@@ -1,6 +1,9 @@
 <?php
 include "../config.php";
 // Izinkan akses dari origin mana pun (atau ganti * dengan http://localhost:5173)
+header_remove("Access-Control-Allow-Origin");
+
+// Set header CORS yang benar
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
