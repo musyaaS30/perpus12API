@@ -3,7 +3,10 @@
 include "../config.php";
 
 // Verifikasi member
-$user = requireAuth(3);
+require_once "../middleware/middleware.php";
+
+// Hanya pustakawan
+$user = authorize(['member']);
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method != "GET") {

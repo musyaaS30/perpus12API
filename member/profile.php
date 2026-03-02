@@ -1,5 +1,9 @@
 <?php
-require_once __DIR__ . '/../middleware/middleware.php';
+// Verifikasi member
+require_once "../middleware/middleware.php";
+
+// Hanya pustakawan
+$user = authorize(['member']);
 include "../config.php";
 
 header("Content-Type: application/json");

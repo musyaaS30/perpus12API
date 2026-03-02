@@ -3,8 +3,11 @@
 // require_once '../middleware.php';
 include "../config.php";
 
-// Hanya member
-$user = requireAuth(3);
+// Verifikasi member
+require_once "../middleware/middleware.php";
+
+// Hanya pustakawan
+$user = authorize(['member']);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
