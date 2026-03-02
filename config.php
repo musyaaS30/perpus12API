@@ -1,25 +1,17 @@
 <?php
-// Konfigurasi Database
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Content-Type: application/json; charset=UTF-8");
-
-// Preflight request handler
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-date_default_timezone_set('Asia/Jakarta');
-
-// Koneksi Database
+// config.php - VERSI JWT (Token TIDAK disimpan di database)
 $host = "localhost";
 $username = "root";
 $password = "";
 $database = "db_perpus_baru";
 
 $conn = mysqli_connect($host, $username, $password, $database);
+
+// CORS - SET ONCE
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json; charset=UTF-8");
 
 if (!$conn) {
     http_response_code(500);
@@ -30,20 +22,42 @@ if (!$conn) {
     exit();
 }
 
-// Fungsi Helper
-function validateToken($token) {
-    global $conn;
-    $query = mysqli_query($conn, "SELECT * FROM users WHERE password = '$token'");
-    return mysqli_fetch_assoc($query);
+// Handle preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
 
-function checkRole($user, $requiredRole) {
-    return isset($user['id_role']) && $user['id_role'] == $requiredRole;
-}
+/**
+ * ❌ FUNGSI INI SUDAH TIDAK DIPERLUKAN LAGI (Token tidak disimpan di database)
+ * 
+ * Gunakan middleware.php dengan fungsi authenticate() dan authorize()
+ * yang sudah menggunakan JWT verification
+ */
 
-function getUserIdByToken($token) {
+/**
+ * Get member ID (siswa/guru) dari nama user
+ * @param string $nama
+ * @param string $type 'siswa' atau 'guru'
+ * @return int|null
+ */
+function getMemberId($nama, $type = 'siswa') {
     global $conn;
-    $query = mysqli_query($conn, "SELECT id_user FROM users WHERE password = '$token'");
-    $result = mysqli_fetch_assoc($query);
-    return $result ? $result['id_user'] : null;
+    
+    if ($type == 'siswa') {
+        $query = mysqli_query($conn, "SELECT id_siswa FROM siswa WHERE nama_siswa = '$nama'");
+        if (mysqli_num_rows($query) > 0) {
+            $data = mysqli_fetch_assoc($query);
+            return $data['id_siswa'];
+        }
+    } else {
+        $query = mysqli_query($conn, "SELECT id_guru FROM guru_anggota WHERE nama_guru = '$nama'");
+        if (mysqli_num_rows($query) > 0) {
+            $data = mysqli_fetch_assoc($query);
+            return $data['id_guru'];
+        }
+    }
+    
+    return null;
 }
+?>

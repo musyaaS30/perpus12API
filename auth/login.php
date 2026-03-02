@@ -1,140 +1,111 @@
 <?php
+// auth/login.php - VERSI JWT (Token TIDAK disimpan di database)
+require_once __DIR__ . '/../helpers/jwt_helper.php';
 include "../config.php";
 
-// Set headers
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Content-Type: application/json; charset=UTF-8");
+$data = json_decode(file_get_contents("php://input"), true);
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
+$email = $data['email'] ?? '';
+$password = $data['password'] ?? '';
+
+if (!$email || !$password) {
+    echo json_encode([
+        "status" => false,
+        "type" => "validation",
+        "message" => "Email dan password wajib diisi"
+    ]);
+    exit;
 }
 
-$method = $_SERVER['REQUEST_METHOD'];
-
-if ($method == "POST") {
-    $input = file_get_contents('php://input');
-    $data = json_decode($input, true);
-    
-    if (!$data) {
-        http_response_code(400);
-        echo json_encode(["status" => false, "message" => "Data tidak valid"]);
-        exit();
-    }
-    
-    $identifier = mysqli_real_escape_string($conn, $data['identifier'] ?? '');
-    $password = mysqli_real_escape_string($conn, $data['password'] ?? '');
-    
-    if (empty($identifier) || empty($password)) {
-        http_response_code(400);
-        echo json_encode(["status" => false, "message" => "Identifier dan password diperlukan"]);
-        exit();
-    }
-    
-    $user = null;
-    $role = null;
-    $userData = null;
-    
-    // 1. CEK APAKAH SUDAH DI-ACC (ADA DI TABEL USERS)
-    $checkUsers = mysqli_query($conn, "SELECT * FROM users WHERE password = '$password'");
-    
-    // Cari berdasarkan identifier di tabel users
-    $userInUsers = null;
-    while ($row = mysqli_fetch_assoc($checkUsers)) {
-        if ($row['nama'] == $identifier || $row['password'] == $password) {
-            $userInUsers = $row;
-            break;
-        }
-    }
-    
-    // Jika tidak ada di users = BELUM DI-ACC
-    if (!$userInUsers) {
-        http_response_code(401);
-        echo json_encode([
-            "status" => false,
-            "message" => "Akun belum di-ACC oleh pustakawan"
-        ]);
-        exit();
-    }
-    
-    // 2. JIKA SUDAH DI-ACC, CEK DETAIL DI TABEL MEREKA
-    $role = $userInUsers['id_role'];
-    
-    if ($role == 1) { // ADMIN
-        $query = mysqli_query($conn, "SELECT * FROM admin WHERE password = '$password'");
-        if (mysqli_num_rows($query) > 0) {
-            $user = mysqli_fetch_assoc($query);
-            $userData = [
-                'id' => $user['id_admin'],
-                'nama' => $user['nama_admin'],
-                'email' => $user['email'],
-                'username' => $user['username']
-            ];
-        }
-    }
-    elseif ($role == 2) { // PUSTAKAWAN
-        $query = mysqli_query($conn, "SELECT * FROM pustakawan WHERE password = '$password'");
-        if (mysqli_num_rows($query) > 0) {
-            $user = mysqli_fetch_assoc($query);
-            $userData = [
-                'id' => $user['id_pustakawan'],
-                'nama' => $user['nama_pustakawan'],
-                'no_telp' => $user['no_telp'],
-                'alamat' => $user['alamat']
-            ];
-        }
-    }
-    elseif ($role == 3) { // MEMBER (SISWA/GURU)
-        // Cek siswa
-        $query = mysqli_query($conn, "SELECT * FROM siswa WHERE password = '$password'");
-        if (mysqli_num_rows($query) > 0) {
-            $user = mysqli_fetch_assoc($query);
-            $userData = [
-                'id' => $user['id_siswa'],
-                'nis' => $user['nis'],
-                'nama' => $user['nama_siswa'],
-                'kelas' => $user['kelas'],
-                'alamat' => $user['alamat'],
-                'type' => 'siswa'
-            ];
-        } 
-        // Cek guru
-        else {
-            $query = mysqli_query($conn, "SELECT * FROM guru_anggota WHERE password = '$password'");
-            if (mysqli_num_rows($query) > 0) {
-                $user = mysqli_fetch_assoc($query);
-                $userData = [
-                    'id' => $user['id_guru'],
-                    'nip' => $user['nip'],
-                    'nama' => $user['nama_guru'],
-                    'no_telp' => $user['no_telp'],
-                    'alamat' => $user['alamat'],
-                    'type' => 'guru'
-                ];
-            }
-        }
-    }
-    
-    if ($userData) {
-        echo json_encode([
-            "status" => true,
-            "message" => "Login berhasil",
-            "data" => [
-                "token" => $password, // Password sebagai token
-                "role" => $role,
-                "user" => $userData
-            ]
-        ]);
-    } else {
-        http_response_code(401);
-        echo json_encode([
-            "status" => false,
-            "message" => "Akun tidak ditemukan"
-        ]);
-    }
-    
-} else {
-    http_response_code(405);
-    echo json_encode(["status" => false, "message" => "Method tidak diizinkan"]);
+function response($status, $type, $message, $extra = []) {
+    echo json_encode(array_merge([
+        "status" => $status,
+        "type" => $type,
+        "message" => $message
+    ], $extra));
+    exit;
 }
+
+/* ======================
+   1. CEK USERS
+====================== */
+$stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+
+    $user = $result->fetch_assoc();
+
+    $valid = password_verify($password, $user['password']) || $password === $user['password'];
+
+    if (!$valid) {
+        response(false, "password", "Password salah");
+    }
+
+    $roleMap = [1 => "admin", 2 => "pustakawan", 3 => "siswa"];
+    $roleName = $roleMap[$user['id_role']] ?? "user";
+
+    // ✅ GENERATE JWT TOKEN (TIDAK DISIMPAN DI DATABASE)
+    $jwtToken = generateJWT([
+        'id' => $user['id_user'],
+        'nama' => $user['nama'],
+        'email' => $user['email'],
+        'role' => $roleName
+    ]);
+
+    response(true, "success", "Login berhasil", [
+        "token" => $jwtToken, // Token JWT
+        "role" => $roleName,
+        "user" => [
+            "id" => $user['id_user'],
+            "nama" => $user['nama'],
+            "email" => $user['email']
+        ]
+    ]);
+}
+
+/* ======================
+   2. CEK SISWA
+====================== */
+$stmt = $conn->prepare("SELECT * FROM siswa WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+
+    $user = $result->fetch_assoc();
+
+    if ($user['status'] !== 'approved') {
+        response(false, "not_approved", "Akun anda belum di-ACC pustakawan");
+    }
+
+    if (!password_verify($password, $user['password'])) {
+        response(false, "password", "Password salah");
+    }
+
+    // ✅ GENERATE JWT TOKEN (TIDAK DISIMPAN DI DATABASE)
+    $jwtToken = generateJWT([
+        'id' => $user['id_siswa'],
+        'nama' => $user['nama_siswa'],
+        'email' => $user['email'],
+        'role' => 'siswa'
+    ]);
+
+    response(true, "success", "Login berhasil", [
+        "token" => $jwtToken, // Token JWT
+        "role" => "siswa",
+        "user" => [
+            "id" => $user['id_siswa'],
+            "nama" => $user['nama_siswa'],
+            "email" => $user['email']
+        ]
+    ]);
+}
+
+/* ======================
+   EMAIL TIDAK DITEMUKAN
+====================== */
+response(false, "email", "Email tidak terdaftar");

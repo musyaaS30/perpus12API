@@ -1,0 +1,1411 @@
+{
+  "info": {
+    "_postman_id": "05dbf8a8-f41f-4e32-b663-e15a120d1705",
+    "name": "API Perpustakaan",
+    "description": "Collection lengkap API Perpustakaan - Admin, Pustakawan, Member",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43141054"
+  },
+  "item": [
+    {
+      "name": "🔐 AUTHENTICATION",
+      "item": [
+        {
+          "name": "1. Register Siswa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"siswa\",\n    \"nis\": \"2024001\",\n    \"nama_siswa\": \"Rakha Naufal\",\n    \"email\": \"rakha@example.com\",\n    \"password\": \"rakha123\",\n    \"kelas\": \"XI RPL 1\",\n    \"alamat\": \"Jakarta\",\n    \"no_telp\": \"081234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Register Guru",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"guru\",\n    \"nip\": \"1987654321\",\n    \"nama_guru\": \"Bapak Irwan\",\n    \"email\": \"irwan@example.com\",\n    \"password\": \"guru123\",\n    \"alamat\": \"Bandung\",\n    \"no_telp\": \"081234567891\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Login - Siswa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"rakha@example.com\",\n    \"password\": \"rakha123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Login - Guru",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"irwan@example.com\",\n    \"password\": \"guru123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. Login - Pustakawan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"ijul@perpus.sch.id\",\n    \"password\": \"pustaka123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "6. Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@perpus.sch.id\",\n    \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7. Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/logout.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👥 PUSTAKAWAN - ACC MEMBER",
+      "item": [
+        {
+          "name": "1. GET - Lihat Member Pending",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/acc_member.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "acc_member.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. POST - ACC Siswa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tipe\": \"siswa\",\n    \"id\": 1,\n    \"aksi\": \"setuju\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/acc_member.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "acc_member.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. POST - Tolak Siswa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tipe\": \"siswa\",\n    \"id\": 1,\n    \"aksi\": \"tolak\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/acc_member.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "acc_member.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. POST - ACC Guru",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tipe\": \"guru\",\n    \"id\": 1,\n    \"aksi\": \"setuju\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/acc_member.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "acc_member.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. DELETE - Hapus Member",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/acc_member.php?tipe=siswa&id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "acc_member.php"
+              ],
+              "query": [
+                {
+                  "key": "tipe",
+                  "value": "siswa"
+                },
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📚 PUSTAKAWAN - BUKU",
+      "item": [
+        {
+          "name": "1. GET - Semua Buku",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/buku.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "buku.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. GET - Buku By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/buku.php?id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "buku.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. POST - Tambah Buku",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id_kategori\": 2,\n    \"judul\": \"Pemrograman Web Modern\",\n    \"image_buku\": \"https://example.com/cover.jpg\",\n    \"deskripsi\": \"Belajar PHP, MySQL, dan JavaScript\",\n    \"penulis\": \"Andi Wijaya\",\n    \"penerbit\": \"Informatika\",\n    \"tahun_terbit\": 2024,\n    \"halaman\": 300,\n    \"stok\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/buku.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "buku.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. PUT - Update Buku",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id_buku\": 1,\n    \"id_kategori\": 2,\n    \"judul\": \"Belajar PHP Native - Edisi Revisi\",\n    \"image_buku\": \"https://example.com/cover-new.jpg\",\n    \"deskripsi\": \"Panduan lengkap PHP tanpa framework\",\n    \"penulis\": \"Andi Wijaya\",\n    \"penerbit\": \"Informatika\",\n    \"tahun_terbit\": 2024,\n    \"halaman\": 320,\n    \"stok\": 15\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/buku.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "buku.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. DELETE - Hapus Buku",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/buku.php?id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "buku.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🏷️ PUSTAKAWAN - KATEGORI",
+      "item": [
+        {
+          "name": "1. GET - Semua Kategori",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/kategori.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "kategori.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. GET - Kategori By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/kategori.php?id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "kategori.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. POST - Tambah Kategori",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nama_kategori\": \"Machine Learning\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/kategori.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "kategori.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. PUT - Update Kategori",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id_kategori\": 1,\n    \"nama_kategori\": \"Sastra Indonesia\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/kategori.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "kategori.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. DELETE - Hapus Kategori",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/kategori.php?id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "kategori.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📖 PUSTAKAWAN - PEMINJAMAN",
+      "item": [
+        {
+          "name": "1. GET - Semua Peminjaman",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/peminjaman.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "peminjaman.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. GET - Filter Status Dipinjam",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/peminjaman.php?status=dipinjam",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "peminjaman.php"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "dipinjam"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. GET - Filter Status Dikembalikan",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/peminjaman.php?status=dikembalikan",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "peminjaman.php"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "dikembalikan"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. GET - Search Peminjaman",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/peminjaman.php?search=Rakha",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "peminjaman.php"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Rakha"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. PUT - Kembalikan Buku",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id_peminjaman\": 1,\n    \"action\": \"kembalikan\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/peminjaman.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "peminjaman.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📦 PUSTAKAWAN - STOK",
+      "item": [
+        {
+          "name": "1. GET - Stok Rendah (≤5)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/mustakawan/stok.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "stok.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. PUT - Tambah Stok",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id_buku\": 1,\n    \"jumlah\": 5,\n    \"action\": \"tambah\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/stok.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "stok.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. PUT - Kurang Stok",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_pustakawan}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id_buku\": 1,\n    \"jumlah\": 2,\n    \"action\": \"kurang\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mustakawan/stok.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mustakawan",
+                "stok.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👤 MEMBER - BUKU",
+      "item": [
+        {
+          "name": "1. GET - Semua Buku (Tersedia)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/buku.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "buku.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. GET - Search Buku",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/buku.php?search=PHP",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "buku.php"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "PHP"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. GET - Filter Kategori",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/buku.php?kategori=2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "buku.php"
+              ],
+              "query": [
+                {
+                  "key": "kategori",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📕 MEMBER - PEMINJAMAN",
+      "item": [
+        {
+          "name": "1. POST - Pinjam Buku",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id_buku\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/member/pinjam.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "pinjam.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. GET - Buku Sedang Dipinjam",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/buku_dipinjam.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "buku_dipinjam.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. GET - Riwayat Peminjaman",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/riwayat.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "riwayat.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👤 MEMBER - PROFILE",
+      "item": [
+        {
+          "name": "1. GET - Profile Saya",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/profile.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "profile.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. PUT - Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_siswa}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"no_telp\": \"081234567899\",\n    \"alamat\": \"Jakarta Selatan\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/member/profile.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "profile.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📊 ADMIN - STATISTIK",
+      "item": [
+        {
+          "name": "1. GET - Dashboard Statistik",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/statistik.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "statistik.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📑 ADMIN - LAPORAN",
+      "item": [
+        {
+          "name": "1. GET - Laporan Peminjaman",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/laporan.php?type=peminjaman&start_date=2026-02-01&end_date=2026-02-12",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "laporan.php"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "peminjaman"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2026-02-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2026-02-12"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. GET - Laporan Buku",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/laporan.php?type=buku",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "laporan.php"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "buku"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔄 ADMIN - AKTIVITAS",
+      "item": [
+        {
+          "name": "1. GET - Aktivitas Terbaru",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/aktivitas.php?limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "aktivitas.php"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🌐 PUBLIC - SHARED",
+      "item": [
+        {
+          "name": "1. GET - Semua Buku (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/shared/buku.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shared",
+                "buku.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2. GET - Detail Buku (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/shared/buku.php?id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shared",
+                "buku.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "3. GET - Search Buku (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/shared/buku.php?search=PHP",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shared",
+                "buku.php"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "PHP"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "4. GET - Semua Kategori (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/shared/kategori.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shared",
+                "kategori.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. GET - Detail Kategori (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/shared/kategori.php?id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shared",
+                "kategori.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost/perpus/api",
+      "description": "Base URL API"
+    },
+    {
+      "key": "token_siswa",
+      "value": "",
+      "description": "Token setelah login siswa"
+    },
+    {
+      "key": "token_guru",
+      "value": "",
+      "description": "Token setelah login guru"
+    },
+    {
+      "key": "token_pustakawan",
+      "value": "",
+      "description": "Token setelah login pustakawan"
+    },
+    {
+      "key": "token_admin",
+      "value": "",
+      "description": "Token setelah login admin"
+    }
+  ]
+}
