@@ -2,8 +2,10 @@
 // admin/statistik.php
 include "../config.php";
 
-// Hanya admin
-$user = requireAuth(1);
+require_once "../middleware/middleware.php";
+
+// Hanya pustakawan
+$user = authorize(['admin']);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
