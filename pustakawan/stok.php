@@ -1,9 +1,11 @@
 <?php
-// mustakawan/stok.php
+// pustakawan/stok.php
 include "../config.php";
 
+require_once "../middleware/middleware.php";
+
 // Hanya pustakawan
-$user = requireAuth(2);
+$user = authorize(['pustakawan']);
 
 $method = $_SERVER['REQUEST_METHOD'];
 

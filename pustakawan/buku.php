@@ -1,9 +1,10 @@
 <?php
-// mustakawan/buku.php
+// pustakawan/buku.php
 include "../config.php";
+require_once "../middleware/middleware.php";
 
-// Hanya pustakawan yang bisa akses
-$user = requireAuth(2);
+// Hanya pustakawan
+$user = authorize(['pustakawan']);
 
 $method = $_SERVER['REQUEST_METHOD'];
 

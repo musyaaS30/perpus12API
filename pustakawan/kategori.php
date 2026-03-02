@@ -3,7 +3,10 @@
 include "../config.php";
 
 // Hanya pustakawan
-$user = requireAuth(2);
+require_once "../middleware/middleware.php";
+
+// Hanya pustakawan
+$user = authorize(['pustakawan']);
 
 $method = $_SERVER['REQUEST_METHOD'];
 

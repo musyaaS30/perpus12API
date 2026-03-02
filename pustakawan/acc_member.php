@@ -1,5 +1,9 @@
 <?php
 include "../config.php";
+require_once "../middleware/middleware.php";
+
+// Hanya pustakawan
+$user = authorize(['pustakawan']);
 
 $method = $_SERVER['REQUEST_METHOD'];
 

@@ -1,5 +1,5 @@
 <?php
-// middleware.php
+// middleware/middleware.php
 require_once __DIR__ . '/../helpers/jwt_helper.php';
 
 /**
